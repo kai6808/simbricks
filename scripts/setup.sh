@@ -52,5 +52,4 @@ echo "Docker installed successfully"
 
 # solve the docker permission issue and pull the pre-built Docker image
 sudo usermod -aG docker $USER
-sg docker -c "docker pull simbricks/simbricks"
-exec sudo -u $USER /bin/bash
+newgrp docker
