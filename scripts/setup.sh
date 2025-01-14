@@ -54,10 +54,5 @@ echo "Docker installed successfully"
 sudo usermod -aG docker $USER
 newgrp docker
 
-# clone the SimBricks repository
-git clone https://github.com/kai6808/simbricks.git
-cd simbricks
-git switch dev-kai # TODO: change to main
-
 # pull the pre-built Docker image
 sudo docker pull simbricks/simbricks
