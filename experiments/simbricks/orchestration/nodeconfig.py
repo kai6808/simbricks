@@ -915,3 +915,42 @@ class MemcachedClient(AppConfig):
             f' --thread={self.threads} --concurrency={self.concurrency}'
             f' --tps={self.throughput} --verbose'
         )]
+
+
+# GarNet Node Config
+class GarnetServer(AppConfig):
+    def __init__(self) -> None:
+        super().__init__()
+        self.port = 8080
+        
+    def run_cmds(self, node: NodeConfig) -> tp.List[str]:
+        return [
+            'cd ~/garnet',
+            f'donet run -c Release --framework=net8.0 -- \
+                --bind {node.ip} \
+                --port {self.port} \
+                --no-pubsub \
+                --no-obj \
+                --index 1g'
+        ]
+    
+class GarnetClient(AppConfig):
+
+    def __init__(self, server_ip) -> None:
+        super().__init__()
+        self.server_ip = server_ip
+        self.port = 8080
+
+    def run_cmds(self, node: NodeConfig) -> tp.List[str]:
+        return [
+            'cd ~/garnet',
+            f'donet run -c Release --framework=net8.0 --project Garnet/benchmark/Resp.benchmark \
+                --host {self.server_ip} \
+                --port {self.port} \
+                --op GET \
+                --keylength 8 \
+                --valuelength 8 \
+                --threads 16 \
+                --batchsize 4096 \
+                --dbsize 1024'
+        ]
