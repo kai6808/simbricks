@@ -50,9 +50,6 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plug
 sudo docker run hello-world
 echo "Docker installed successfully"
 
-# solve the docker permission issue
+# solve the docker permission issue and pull the pre-built Docker image
 sudo usermod -aG docker $USER
-newgrp docker
-
-# pull the pre-built Docker image
-sudo docker pull simbricks/simbricks
+sg docker -c "docker pull simbricks/simbricks"
