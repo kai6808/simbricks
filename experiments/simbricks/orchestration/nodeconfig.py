@@ -945,7 +945,7 @@ class GarnetServer(AppConfig):
                 --port {self.port} \
                 --no-pubsub \
                 --no-obj \
-                --index 256m'
+                --index 64m'
         ]
     
 class GarnetClient(AppConfig):
@@ -966,8 +966,8 @@ class GarnetClient(AppConfig):
                 --keylength 8 \
                 --valuelength 8 \
                 --threads 16 \
-                --batchsize 4096 \
-                --dbsize 1024 \
+                --batchsize 64 \
+                --dbsize 256 \
                 | tee /tmp/guest/{self.results_file}'
         ]
     

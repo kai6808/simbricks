@@ -1,9 +1,11 @@
 # Use I40e NICs, ns3 bridge network, and gem5 simulator.
-# The benchmark is from Garnet, where the server runs with 1 GB index.
+# The benchmark is from Garnet, where the server runs with 256 MB index.
 # The workflow is:
 #   1. start the Garnet server on the first node
 #   2. start the Garnet client on the second node
 #   3. run the performance test benchmark
+# Results of the benchmark are stored in the following path:
+# <simbricks_experiment_dir>/out/garnet_simple/client/tmp/guest/garnet_results.txt
 
 from simbricks.orchestration.experiments import Experiment
 from simbricks.orchestration.nodeconfig import (
