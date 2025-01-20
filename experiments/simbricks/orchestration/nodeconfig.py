@@ -922,6 +922,8 @@ class GarnetI40eLinuxNode(I40eLinuxNode):
     
     def prepare_pre_cp(self) -> tp.List[str]:
         return super().prepare_pre_cp() + [
+            'apt-get update',
+            'apt-get install -y dotnet-sdk-8.0',
             'cd /root',
             'mkdir garnet',
             'git clone https://github.com/microsoft/garnet.git',
@@ -943,7 +945,7 @@ class GarnetServer(AppConfig):
                 --port {self.port} \
                 --no-pubsub \
                 --no-obj \
-                --index 1g'
+                --index 256m'
         ]
     
 class GarnetClient(AppConfig):
@@ -952,6 +954,7 @@ class GarnetClient(AppConfig):
         super().__init__()
         self.server_ip = server_ip
         self.port = 8080
+        self.results_file = 'garnet_results.txt'
 
     def run_cmds(self, node: NodeConfig) -> tp.List[str]:
         return [
@@ -964,5 +967,12 @@ class GarnetClient(AppConfig):
                 --valuelength 8 \
                 --threads 16 \
                 --batchsize 4096 \
-                --dbsize 1024'
+                --dbsize 1024',
+            f'cp /root/{self.results_file} /tmp/guest/{self.results_file}'
         ]
+    
+    def config_files(self, environment: env.ExpEnv) -> tp.Dict[str, tp.IO]:
+        # create an empty file that will be filled later
+        return {
+            self.results_file: self.strfile("")
+        }
