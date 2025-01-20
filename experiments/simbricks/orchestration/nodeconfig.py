@@ -940,7 +940,7 @@ class GarnetServer(AppConfig):
     def run_cmds(self, node: NodeConfig) -> tp.List[str]:
         return [
             'cd /root/garnet',
-            f'donet run -c Release --framework=net8.0 -- \
+            f'dotnet run -c Release --framework=net8.0 --project ./main/GarnetServer \
                 --bind {node.ip} \
                 --port {self.port} \
                 --no-pubsub \
@@ -959,7 +959,7 @@ class GarnetClient(AppConfig):
     def run_cmds(self, node: NodeConfig) -> tp.List[str]:
         return [
             'cd /root/garnet',
-            f'donet run -c Release --framework=net8.0 --project Garnet/benchmark/Resp.benchmark \
+            f'dotnet run -c Release --framework=net8.0 --project ./benchmark/Resp.benchmark \
                 --host {self.server_ip} \
                 --port {self.port} \
                 --op GET \
