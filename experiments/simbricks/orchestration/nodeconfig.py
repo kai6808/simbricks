@@ -918,6 +918,18 @@ class MemcachedClient(AppConfig):
 
 
 # GarNet Node Config
+class GarnetI40eLinuxNode(I40eLinuxNode):
+    
+    def prepare_pre_cp(self) -> tp.List[str]:
+        return super().prepare_pre_cp() + [
+            'cd /root',
+            'mkdir garnet',
+            'git clone https://github.com/microsoft/garnet.git',
+            'cd garnet',
+            'dotnet restore',
+            'dotnet build -c Release'
+        ]
+
 class GarnetServer(AppConfig):
     def __init__(self) -> None:
         super().__init__()
@@ -925,7 +937,7 @@ class GarnetServer(AppConfig):
         
     def run_cmds(self, node: NodeConfig) -> tp.List[str]:
         return [
-            'cd ~/garnet',
+            'cd /root/garnet',
             f'donet run -c Release --framework=net8.0 -- \
                 --bind {node.ip} \
                 --port {self.port} \
@@ -943,7 +955,7 @@ class GarnetClient(AppConfig):
 
     def run_cmds(self, node: NodeConfig) -> tp.List[str]:
         return [
-            'cd ~/garnet',
+            'cd /root/garnet',
             f'donet run -c Release --framework=net8.0 --project Garnet/benchmark/Resp.benchmark \
                 --host {self.server_ip} \
                 --port {self.port} \

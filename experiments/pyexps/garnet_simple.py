@@ -6,7 +6,11 @@
 #   3. run the performance test benchmark
 
 from simbricks.orchestration.experiments import Experiment
-from simbricks.orchestration.nodeconfig import I40eLinuxNode, GarnetServer, GarnetClient
+from simbricks.orchestration.nodeconfig import (
+    GarnetI40eLinuxNode,
+    GarnetServer,
+    GarnetClient,
+)
 from simbricks.orchestration.simulators import Gem5Host, I40eNIC, NS3BridgeNet
 
 # create experiment
@@ -18,7 +22,7 @@ network = NS3BridgeNet()
 e.add_network(network)
 
 # Create server
-server_config = I40eLinuxNode()
+server_config = GarnetI40eLinuxNode()
 server_config.ip = "10.0.0.1"
 server_config.memory = 8192  # 8GB RAM
 server_config.cores = 4  # 4 CPU cores
@@ -34,7 +38,7 @@ server.add_nic(server_nic)
 server_nic.set_network(network)
 
 # Create client
-client_config = I40eLinuxNode()
+client_config = GarnetI40eLinuxNode()
 client_config.ip = "10.0.0.2"
 client_config.memory = 4096  # 4GB RAM
 client_config.cores = 4  # 4 CPU cores
