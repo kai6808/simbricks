@@ -925,7 +925,6 @@ class GarnetI40eLinuxNode(I40eLinuxNode):
             'apt-get update',
             'apt-get install -y dotnet-sdk-8.0',
             'cd /root',
-            'mkdir garnet',
             'git clone https://github.com/microsoft/garnet.git',
             'cd garnet',
             'dotnet restore',
