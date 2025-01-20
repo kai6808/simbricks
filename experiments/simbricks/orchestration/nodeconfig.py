@@ -967,8 +967,8 @@ class GarnetClient(AppConfig):
                 --valuelength 8 \
                 --threads 16 \
                 --batchsize 4096 \
-                --dbsize 1024',
-            f'cp /root/{self.results_file} /tmp/guest/{self.results_file}'
+                --dbsize 1024 \
+                | tee /tmp/guest/{self.results_file}'
         ]
     
     def config_files(self, environment: env.ExpEnv) -> tp.Dict[str, tp.IO]:
