@@ -915,3 +915,63 @@ class MemcachedClient(AppConfig):
             f' --thread={self.threads} --concurrency={self.concurrency}'
             f' --tps={self.throughput} --verbose'
         )]
+
+
+# GarNet Node Config
+class GarnetI40eLinuxNode(I40eLinuxNode):
+    
+    def prepare_pre_cp(self) -> tp.List[str]:
+        return super().prepare_pre_cp() + [
+            'apt-get update',
+            'apt-get install -y dotnet-sdk-8.0',
+            'cd /root',
+            'git clone https://github.com/microsoft/garnet.git',
+            'cd garnet',
+            'dotnet restore',
+            'dotnet build -c Release'
+        ]
+
+class GarnetServer(AppConfig):
+    def __init__(self) -> None:
+        super().__init__()
+        self.port = 8080
+        
+    def run_cmds(self, node: NodeConfig) -> tp.List[str]:
+        return [
+            'cd /root/garnet',
+            f'dotnet run -c Release --framework=net8.0 --project ./main/GarnetServer \
+                --bind {node.ip} \
+                --port {self.port} \
+                --no-pubsub \
+                --no-obj \
+                --index 64m'
+        ]
+    
+class GarnetClient(AppConfig):
+
+    def __init__(self, server_ip) -> None:
+        super().__init__()
+        self.server_ip = server_ip
+        self.port = 8080
+        self.results_file = 'garnet_results.txt'
+
+    def run_cmds(self, node: NodeConfig) -> tp.List[str]:
+        return [
+            'cd /root/garnet',
+            f'dotnet run -c Release --framework=net8.0 --project ./benchmark/Resp.benchmark \
+                --host {self.server_ip} \
+                --port {self.port} \
+                --op GET \
+                --keylength 8 \
+                --valuelength 8 \
+                --threads 16 \
+                --batchsize 64 \
+                --dbsize 256 \
+                | tee /tmp/guest/{self.results_file}'
+        ]
+    
+    def config_files(self, environment: env.ExpEnv) -> tp.Dict[str, tp.IO]:
+        # create an empty file that will be filled later
+        return {
+            self.results_file: self.strfile("")
+        }
