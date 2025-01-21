@@ -1,4 +1,4 @@
-# Use I40e NICs, ns3 bridge network, and gem5 simulator.
+# Use I40e NICs, ns3 bridge network, and Qemu simulator(not synced).
 # The benchmark is from Garnet, where the server runs with 256 MB index.
 # The workflow is:
 #   1. start the Garnet server on the first node
@@ -13,7 +13,7 @@ from simbricks.orchestration.nodeconfig import (
     GarnetServer,
     GarnetClient,
 )
-from simbricks.orchestration.simulators import Gem5Host, I40eNIC, NS3BridgeNet
+from simbricks.orchestration.simulators import QemuHost, I40eNIC, NS3BridgeNet
 
 # create experiment
 e = Experiment(name="garnet-simple")
@@ -29,7 +29,7 @@ server_config.ip = "10.0.0.1"
 server_config.memory = 8192  # 8GB RAM
 server_config.cores = 4  # 4 CPU cores
 server_config.app = GarnetServer()
-server = Gem5Host(server_config)
+server = QemuHost(server_config)
 server.name = "server"
 e.add_host(server)
 
@@ -45,7 +45,7 @@ client_config.ip = "10.0.0.2"
 client_config.memory = 4096  # 4GB RAM
 client_config.cores = 4  # 4 CPU cores
 client_config.app = GarnetClient(server_ip="10.0.0.1")
-client = Gem5Host(client_config)
+client = QemuHost(client_config)
 client.name = "client"
 client.wait = True
 e.add_host(client)
