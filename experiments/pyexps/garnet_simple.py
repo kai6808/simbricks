@@ -1,4 +1,4 @@
-# Use I40e NICs, ns3 bridge network, and Qemu simulator(not synced).
+# Use I40e NICs, ns3 bridge network, and (unsynchronized) Qemu simulator.
 # The benchmark is from Garnet, where the server runs with 256 MB index.
 # The workflow is:
 #   1. start the Garnet server on the first node
