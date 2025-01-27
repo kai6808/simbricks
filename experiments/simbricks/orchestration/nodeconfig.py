@@ -948,6 +948,19 @@ class GarnetClient(AppConfig):
 
     def run_cmds(self, node: NodeConfig) -> tp.List[str]:
         return [
+            # Debug commands
+            'echo "=== System Information ==="',
+            'uname -a',
+            'free -h',
+            'df -h',
+            'echo "=== .NET Information ==="',
+            'which dotnet || echo "dotnet not in PATH"',
+            'dotnet --info || echo "dotnet info failed"',
+            'echo "=== Directory Information ==="',
+            'pwd',
+            'ls -la /root/garnet',
+            'echo "=== Environment Variables ==="',
+            'env',
             'cd /root/garnet',
             f'dotnet run -c Release --framework=net8.0 --project ./benchmark/Resp.benchmark \
                 --host {self.server_ip} \
