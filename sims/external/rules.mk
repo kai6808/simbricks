@@ -88,6 +88,17 @@ ns-3-clean:
 	-cd $(EXTERNAL_SIMS_DIR)ns-3 && ./ns3 clean
 	rm -f $(EXTERNAL_SIMS_DIR)ns-3/ready
 
+$(d)omnet:
+	git clone https://github.com/kai6808/omnet-inet.git $@
+
+$(d)omnet/ready: $(d)omnet $(lib_netif)
+	+cd $< && SIMBRICKS_PATH=$(abspath $(base_dir)) ./simbricks-build.sh configure && make -j
+	touch $@
+
+omnet-clean:
+	-cd $(EXTERNAL_SIMS_DIR)omnet && make clean
+	rm -f $(EXTERNAL_SIMS_DIR)omnet/ready
+
 $(d)femu:
 	git clone https://github.com/simbricks/femu.git $@
 
