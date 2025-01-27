@@ -945,7 +945,6 @@ class GarnetClient(AppConfig):
         super().__init__()
         self.server_ip = server_ip
         self.port = 8080
-        self.results_file = 'garnet_results.txt'
 
     def run_cmds(self, node: NodeConfig) -> tp.List[str]:
         return [
