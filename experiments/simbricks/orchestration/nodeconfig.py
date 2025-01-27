@@ -958,12 +958,5 @@ class GarnetClient(AppConfig):
                 --valuelength 8 \
                 --threads 16 \
                 --batchsize 64 \
-                --dbsize 256 \
-                | tee /tmp/guest/{self.results_file}'
+                --dbsize 256'
         ]
-    
-    def config_files(self, environment: env.ExpEnv) -> tp.Dict[str, tp.IO]:
-        # create an empty file that will be filled later
-        return {
-            self.results_file: self.strfile("")
-        }
