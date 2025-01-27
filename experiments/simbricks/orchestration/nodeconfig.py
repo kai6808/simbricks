@@ -921,15 +921,7 @@ class MemcachedClient(AppConfig):
 class GarnetI40eLinuxNode(I40eLinuxNode):
     
     def prepare_pre_cp(self) -> tp.List[str]:
-        return super().prepare_pre_cp() + [
-            'apt-get update',
-            'apt-get install -y dotnet-sdk-8.0',
-            'cd /root',
-            'git clone https://github.com/microsoft/garnet.git',
-            'cd garnet',
-            'dotnet restore',
-            'dotnet build -c Release'
-        ]
+        return super().prepare_pre_cp()
 
 class GarnetServer(AppConfig):
     def __init__(self) -> None:
@@ -938,8 +930,9 @@ class GarnetServer(AppConfig):
         
     def run_cmds(self, node: NodeConfig) -> tp.List[str]:
         return [
+            'mount -t proc proc /proc',  # Mount proc first
             'cd /root/garnet',
-            f'dotnet run -c Release --framework=net8.0 --project ./main/GarnetServer \
+            f'dotnet ./main/GarnetServer/bin/Release/net8.0/GarnetServer.dll \
                 --bind {node.ip} \
                 --port {self.port} \
                 --no-pubsub \
@@ -953,25 +946,38 @@ class GarnetClient(AppConfig):
         super().__init__()
         self.server_ip = server_ip
         self.port = 8080
-        self.results_file = 'garnet_results.txt'
+        self.batchsize = 64
+        self.keylength = 8
+        self.valuelength = 8
+        self.dbsize = 256
+        self.threads = 16
+        self.runtime = 15
 
     def run_cmds(self, node: NodeConfig) -> tp.List[str]:
         return [
+            'mount -t proc proc /proc',  # Mount proc first
             'cd /root/garnet',
-            f'dotnet run -c Release --framework=net8.0 --project ./benchmark/Resp.benchmark \
+            f'dotnet ./benchmark/Resp.benchmark/bin/Release/net8.0/Resp.benchmark.dll \
                 --host {self.server_ip} \
                 --port {self.port} \
                 --op GET \
-                --keylength 8 \
-                --valuelength 8 \
-                --threads 16 \
-                --batchsize 64 \
-                --dbsize 256 \
-                | tee /tmp/guest/{self.results_file}'
+                --keylength {self.keylength} \
+                --valuelength {self.valuelength} \
+                --threads {self.threads} \
+                --batchsize {self.batchsize} \
+                --dbsize {self.dbsize}',
+            f'dotnet ./benchmark/Resp.benchmark/bin/Release/net8.0/Resp.benchmark.dll \
+                --host {self.server_ip} \
+                --port {self.port} \
+                --batchsize 1 \
+                --threads {self.threads} \
+                --client GarnetClientSession \
+                --runtime {self.runtime} \
+                --op-workload GET,SET\
+                --op-percent 80,20 \
+                --online \
+                --valuelength {self.valuelength} \
+                --keylength {self.keylength} \
+                --dbsize {self.dbsize} \
+                --itp {self.batchsize}'
         ]
-    
-    def config_files(self, environment: env.ExpEnv) -> tp.Dict[str, tp.IO]:
-        # create an empty file that will be filled later
-        return {
-            self.results_file: self.strfile("")
-        }

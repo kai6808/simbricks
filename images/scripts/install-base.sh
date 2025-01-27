@@ -15,7 +15,18 @@ apt-get -y install \
     busybox \
     numactl \
     sysbench \
-    time
+    time \
+    git \
+    dotnet-sdk-8.0 \
+    ca-certificates
+
+update-ca-certificates
+
+cd /root
+git clone https://github.com/microsoft/garnet.git
+cd garnet
+dotnet restore
+dotnet build -c Release
 
 pushd /tmp/input
 mv guestinit.sh /home/ubuntu/guestinit.sh
