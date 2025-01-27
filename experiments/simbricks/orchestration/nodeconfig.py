@@ -946,6 +946,12 @@ class GarnetClient(AppConfig):
         super().__init__()
         self.server_ip = server_ip
         self.port = 8080
+        self.batchsize = 64
+        self.keylength = 8
+        self.valuelength = 8
+        self.dbsize = 256
+        self.threads = 16
+        self.runtime = 15
 
     def run_cmds(self, node: NodeConfig) -> tp.List[str]:
         return [
@@ -955,9 +961,23 @@ class GarnetClient(AppConfig):
                 --host {self.server_ip} \
                 --port {self.port} \
                 --op GET \
-                --keylength 8 \
-                --valuelength 8 \
-                --threads 16 \
-                --batchsize 64 \
-                --dbsize 256'
+                --keylength {self.keylength} \
+                --valuelength {self.valuelength} \
+                --threads {self.threads} \
+                --batchsize {self.batchsize} \
+                --dbsize {self.dbsize}',
+            f'dotnet ./benchmark/Resp.benchmark/bin/Release/net8.0/Resp.benchmark.dll \
+                --host {self.server_ip} \
+                --port {self.port} \
+                --batchsize 1 \
+                --threads {self.threads} \
+                --client GarnetClientSession \
+                --runtime {self.runtime} \
+                --op-workload GET,SET\
+                --op-percent 80,20 \
+                --online \
+                --valuelength {self.valuelength} \
+                --keylength {self.keylength} \
+                --dbsize {self.dbsize} \
+                --itp {self.batchsize}'
         ]
