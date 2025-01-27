@@ -15,7 +15,10 @@ apt-get -y install \
     busybox \
     numactl \
     sysbench \
-    time
+    time \
+    git \
+    dotnet-sdk-8.0 \
+    ca-certificates
 
 pushd /tmp/input
 mv guestinit.sh /home/ubuntu/guestinit.sh

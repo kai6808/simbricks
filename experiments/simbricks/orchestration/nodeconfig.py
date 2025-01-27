@@ -930,11 +930,6 @@ class GarnetServer(AppConfig):
         
     def run_cmds(self, node: NodeConfig) -> tp.List[str]:
         return [
-            'echo "nameserver 8.8.8.8" > /etc/resolv.conf',
-            'echo "nameserver 8.8.4.4" >> /etc/resolv.conf',
-            'apt-get update',
-            'apt-get install -y dotnet-sdk-8.0',
-            'apt-get install -y git',
             'cd /root',
             'git clone https://github.com/microsoft/garnet.git',
             'cd garnet',
@@ -958,11 +953,6 @@ class GarnetClient(AppConfig):
 
     def run_cmds(self, node: NodeConfig) -> tp.List[str]:
         return [
-            'echo "nameserver 8.8.8.8" > /etc/resolv.conf',
-            'echo "nameserver 8.8.4.4" >> /etc/resolv.conf',
-            'apt-get update',
-            'apt-get install -y dotnet-sdk-8.0',
-            'apt-get install -y git',
             'cd /root',
             'git clone https://github.com/microsoft/garnet.git',
             'cd garnet',
