@@ -30,8 +30,8 @@ EXTERNAL_SIMS_DIR := $(d)
 
 $(eval $(call subdir,simics))
 
-external: $(d)gem5/ready $(d)qemu/ready $(d)ns-3/ready $(d)femu/ready $(d)bmv2/ready
-.PHONY: external gem5-clean qemu-clean ns-3-clean femu-clean bmv2-clean
+external: $(d)gem5/ready $(d)qemu/ready $(d)ns-3/ready $(d)femu/ready $(d)bmv2/ready $(d)omnet/ready
+.PHONY: external gem5-clean qemu-clean ns-3-clean femu-clean bmv2-clean omnet-clean
 
 
 
@@ -126,6 +126,6 @@ bmv2-clean:
 	-cd $(EXTERNAL_SIMS_DIR)bmv2 && $(MAKE) clean
 	rm -f $(EXTERNAL_SIMS_DIR)bmv2/ready
 
-DISTCLEAN := $(d)gem5 $(d)qemu $(d)ns-3 $(d)femu
-EXTERNAL_CLEAN_TASKS := gem5-clean qemu-clean ns-3-clean femu-clean bmv2-clean
+DISTCLEAN := $(d)gem5 $(d)qemu $(d)ns-3 $(d)femu $(d)omnet
+EXTERNAL_CLEAN_TASKS := gem5-clean qemu-clean ns-3-clean femu-clean bmv2-clean omnet-clean
 include mk/subdir_post.mk
