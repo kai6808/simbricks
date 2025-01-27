@@ -931,13 +931,13 @@ class GarnetServer(AppConfig):
     def run_cmds(self, node: NodeConfig) -> tp.List[str]:
         return [
             'apt-get update',
-            'apt-get install -y git dotnet-sdk-8.0',
-            'sudo apt install git-all',
+            'apt-get install -y dotnet-sdk-8.0',
+            'apt-get install -y git',
             'cd /root',
             'git clone https://github.com/microsoft/garnet.git',
             'cd garnet',
             'dotnet restore',
-            'dotnet build -c Release'
+            'dotnet build -c Release',
             f'dotnet run -c Release --framework=net8.0 --project ./main/GarnetServer \
                 --bind {node.ip} \
                 --port {self.port} \
@@ -958,12 +958,12 @@ class GarnetClient(AppConfig):
         return [
             'apt-get update',
             'apt-get install -y dotnet-sdk-8.0',
-            'sudo apt install git-all',
+            'apt-get install -y git',
             'cd /root',
             'git clone https://github.com/microsoft/garnet.git',
             'cd garnet',
             'dotnet restore',
-            'dotnet build -c Release'
+            'dotnet build -c Release',
             f'dotnet run -c Release --framework=net8.0 --project ./benchmark/Resp.benchmark \
                 --host {self.server_ip} \
                 --port {self.port} \
