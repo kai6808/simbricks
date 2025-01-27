@@ -26,7 +26,7 @@ e.add_network(network)
 # Create server
 server_config = GarnetI40eLinuxNode()
 server_config.ip = "10.0.0.1"
-server_config.memory = 8192  # 8GB RAM
+server_config.memory = 16384  # Increased to 16GB RAM
 server_config.cores = 4  # 4 CPU cores
 server_config.app = GarnetServer()
 server = QemuHost(server_config)
@@ -42,7 +42,7 @@ server_nic.set_network(network)
 # Create client
 client_config = GarnetI40eLinuxNode()
 client_config.ip = "10.0.0.2"
-client_config.memory = 4096  # 4GB RAM
+client_config.memory = 16384  # Increased to 16GB RAM
 client_config.cores = 4  # 4 CPU cores
 client_config.app = GarnetClient(server_ip="10.0.0.1")
 client = QemuHost(client_config)
