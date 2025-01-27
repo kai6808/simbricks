@@ -932,9 +932,7 @@ class GarnetServer(AppConfig):
         return [
             'mount -t proc proc /proc',  # Mount proc first
             'cd /root/garnet',
-            'dotnet restore',
-            'dotnet build -c Release',
-            f'dotnet run -c Release --framework=net8.0 --project ./main/GarnetServer \
+            f'dotnet ./main/GarnetServer/bin/Release/net8.0/GarnetServer.dll \
                 --bind {node.ip} \
                 --port {self.port} \
                 --no-pubsub \
@@ -953,9 +951,7 @@ class GarnetClient(AppConfig):
         return [
             'mount -t proc proc /proc',  # Mount proc first
             'cd /root/garnet',
-            'dotnet restore',
-            'dotnet build -c Release',
-            f'dotnet run -c Release --framework=net8.0 --project ./benchmark/Resp.benchmark \
+            f'dotnet ./benchmark/Resp.benchmark/bin/Release/net8.0/Resp.benchmark.dll \
                 --host {self.server_ip} \
                 --port {self.port} \
                 --op GET \
