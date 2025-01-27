@@ -931,6 +931,7 @@ class GarnetServer(AppConfig):
     def run_cmds(self, node: NodeConfig) -> tp.List[str]:
         return [
             'cd /root/garnet',
+            'dotnet build -c Release',
             f'dotnet run -c Release --framework=net8.0 --project ./main/GarnetServer \
                 --bind {node.ip} \
                 --port {self.port} \
@@ -950,9 +951,7 @@ class GarnetClient(AppConfig):
     def run_cmds(self, node: NodeConfig) -> tp.List[str]:
         return [
             'cd /root/garnet',
-            'which dotnet',
-            'dotnet --info',
-            'ls -la /root/garnet',
+            'dotnet build -c Release',
             f'dotnet run -c Release --framework=net8.0 --project ./benchmark/Resp.benchmark \
                 --host {self.server_ip} \
                 --port {self.port} \
