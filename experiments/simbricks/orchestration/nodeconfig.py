@@ -946,7 +946,8 @@ class GarnetClient(AppConfig):
         super().__init__()
         self.server_ip = server_ip
         self.port = 8080
-
+        self.results_file = 'garnet_results.txt'
+        
     def run_cmds(self, node: NodeConfig) -> tp.List[str]:
         return [
             'mount -t proc proc /proc',  # Mount proc first
@@ -959,5 +960,12 @@ class GarnetClient(AppConfig):
                 --valuelength 8 \
                 --threads 16 \
                 --batchsize 64 \
-                --dbsize 256'
+                --dbsize 256 \
+                | tee /tmp/guest/{self.results_file}'
         ]
+
+    def config_files(self, environment: env.ExpEnv) -> tp.Dict[str, tp.IO]:
+        # create an empty file that will be filled later
+        return {
+            self.results_file: self.strfile("")
+        }
