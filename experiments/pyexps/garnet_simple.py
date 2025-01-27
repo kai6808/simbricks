@@ -21,13 +21,14 @@ e.checkpoint = True
 
 # create network
 network = NS3BridgeNet()
+network.sync_mode = 1
 e.add_network(network)
 
 # Create server
 server_config = GarnetI40eLinuxNode()
 server_config.ip = "10.0.0.1"
-server_config.memory = 16384  # Increased to 16GB RAM
-server_config.cores = 4  # 4 CPU cores
+server_config.memory = 8192  # 8GB RAM
+server_config.cores = 20  # 20 CPU cores
 server_config.app = GarnetServer()
 server = QemuHost(server_config)
 server.name = "server"
@@ -35,6 +36,7 @@ e.add_host(server)
 
 # Attach server's NIC
 server_nic = I40eNIC()
+server_nic.sync_mode = 1
 e.add_nic(server_nic)
 server.add_nic(server_nic)
 server_nic.set_network(network)
@@ -42,8 +44,8 @@ server_nic.set_network(network)
 # Create client
 client_config = GarnetI40eLinuxNode()
 client_config.ip = "10.0.0.2"
-client_config.memory = 16384  # Increased to 16GB RAM
-client_config.cores = 4  # 4 CPU cores
+client_config.memory = 8192  # 8GB RAM
+client_config.cores = 20  # 20 CPU cores
 client_config.app = GarnetClient(server_ip="10.0.0.1")
 client = QemuHost(client_config)
 client.name = "client"
@@ -57,7 +59,7 @@ client.add_nic(client_nic)
 client_nic.set_network(network)
 
 # Set network latencies
-eth_latency = 500 * 10**3  # 500 us
+eth_latency = 19 * 10**3  # 19 us
 network.eth_latency = eth_latency
 client_nic.eth_latency = eth_latency
 server_nic.eth_latency = eth_latency
