@@ -26,11 +26,11 @@ apt-get -y install \
 
 update-ca-certificates
 
-cd /root
-git clone https://github.com/microsoft/garnet.git
-cd garnet
-dotnet restore
-dotnet build -c Release
+# cd /root
+# git clone https://github.com/microsoft/garnet.git
+# cd garnet
+# dotnet restore
+# dotnet build -c Release
 
 # install NetworkMesaurement
 cd /root
