@@ -18,7 +18,8 @@ apt-get -y install \
     time \
     git \
     dotnet-sdk-8.0 \
-    ca-certificates
+    ca-certificates \
+    texinfo
 
 update-ca-certificates
 
@@ -27,6 +28,17 @@ git clone https://github.com/microsoft/garnet.git
 cd garnet
 dotnet restore
 dotnet build -c Release
+
+# install NetworkMesaurement
+cd /root
+wget --no-check-certificate "https://docs.google.com/uc?export=download&id=18vjIaNdkgozoJv6JxNI_ludnXRw7vF2T" -O NetworkMeasurement.zip
+unzip NetworkMeasurement.zip
+rm NetworkMeasurement.zip
+cd NetworkMeasurement
+./Init.sh
+./configure LDFLAGS="-Wl,--allow-multiple-definition"
+make
+sudo make install
 
 pushd /tmp/input
 mv guestinit.sh /home/ubuntu/guestinit.sh
