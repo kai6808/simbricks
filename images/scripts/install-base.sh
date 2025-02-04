@@ -21,7 +21,8 @@ apt-get -y install \
     ca-certificates \
     texinfo \
     wget \
-    unzip
+    unzip \
+    gcc
 
 update-ca-certificates
 
