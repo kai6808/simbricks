@@ -19,7 +19,9 @@ apt-get -y install \
     git \
     dotnet-sdk-8.0 \
     ca-certificates \
-    texinfo
+    texinfo \
+    wget \
+    unzip
 
 update-ca-certificates
 
@@ -33,7 +35,6 @@ dotnet build -c Release
 cd /root
 wget --no-check-certificate "https://docs.google.com/uc?export=download&id=18vjIaNdkgozoJv6JxNI_ludnXRw7vF2T" -O NetworkMeasurement.zip
 unzip NetworkMeasurement.zip
-rm NetworkMeasurement.zip
 cd NetworkMeasurement
 ./Init.sh
 ./configure LDFLAGS="-Wl,--allow-multiple-definition"
