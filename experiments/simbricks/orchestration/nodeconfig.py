@@ -991,6 +991,7 @@ class NMServer(AppConfig):
     def run_cmds(self, node: NodeConfig) -> tp.List[str]:
         return [
             'mount -t proc proc /proc',  # Mount proc first
+            'ls /root',
             'cd /root/NetworkMeasurement',
             f'/usr/local/bin/netserver -D -4 -p {self.port}'
         ]
@@ -1006,6 +1007,7 @@ class NMClient(AppConfig):
     def run_cmds(self, node: NodeConfig) -> tp.List[str]:
         return [
             'mount -t proc proc /proc',  # Mount proc first
+            'ls /root',
             'cd /root/NetworkMeasurement',
             f'/usr/local/bin/netperf -H <server_ip> -p {self.port} -t TCP_RR -l -100000 -- -r 32,4096 -o min_latency,mean_latency,p50_latency,p90_latency,p99_latency,p999_latency,max_latency,stddev_latency,transaction_rate'
         ]
