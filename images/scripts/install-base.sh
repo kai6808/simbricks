@@ -37,9 +37,7 @@ wget --no-check-certificate "https://docs.google.com/uc?export=download&id=18vjI
 unzip NetworkMeasurement.zip
 cd NetworkMeasurement
 ./Init.sh
-./configure LDFLAGS="-Wl,--allow-multiple-definition"
-make
-sudo make install
+./Build.sh
 
 pushd /tmp/input
 mv guestinit.sh /home/ubuntu/guestinit.sh
