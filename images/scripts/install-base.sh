@@ -35,7 +35,7 @@ dotnet build -c Release
 cd /root
 wget --no-check-certificate "https://docs.google.com/uc?export=download&id=18vjIaNdkgozoJv6JxNI_ludnXRw7vF2T" -O NetworkMeasurement.zip
 unzip NetworkMeasurement.zip
-cd NetworkMeasurement
+cd NetworkMeasurement-main
 ./Init.sh
 ./Build.sh
 
